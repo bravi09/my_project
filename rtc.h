@@ -23,7 +23,7 @@ char valid_codes[4][11] = {
     "23P35A0404",
     "23P35A0405",
     "23P35A0406",
-    "23P35A0413"
+    "23P35A04"
 };
 
 char input[20];
@@ -178,14 +178,45 @@ bit is_valid(char *ch) {
     return 0;
 }
 
-void display_datetime(unsigned char hr, unsigned char min, unsigned char sec, unsigned char date, unsigned char month, unsigned char year) {
-    lcd_cmd(0x80);
-    lcd_data((date / 10) + '0'); lcd_data((date % 10) + '0'); lcd_data('/');
-    lcd_data((month / 10) + '0'); lcd_data((month % 10) + '0'); lcd_data('/');
-    lcd_data((year / 10) + '0'); lcd_data((year % 10) + '0');
+// Function: display_datetime()
+// Purpose : To display Date and Time on LCD in the format:
+//           Date: DD/MM/YY  (on 1st line)
+//           Time: HH:MM:SS  (on 2nd line)
 
-    lcd_cmd(0xC0);
-    lcd_data((hr / 10) + '0'); lcd_data((hr % 10) + '0'); lcd_data(':');
-    lcd_data((min / 10) + '0'); lcd_data((min % 10) + '0'); lcd_data(':');
-    lcd_data((sec / 10) + '0'); lcd_data((sec % 10) + '0');
+void display_datetime(unsigned char hr, unsigned char min, unsigned char sec,
+                      unsigned char date, unsigned char month, unsigned char year) {
+
+    // --- Display Date on First Line ---
+    lcd_cmd(0x80);   // Move LCD cursor to first line, first position
+
+    // Display Date (DD)
+    lcd_data((date / 10) + '0');    // Display tens digit of date
+    lcd_data((date % 10) + '0');    // Display ones digit of date
+    lcd_data('/');                  // Display separator '/'
+
+    // Display Month (MM)
+    lcd_data((month / 10) + '0');   // Tens digit of month
+    lcd_data((month % 10) + '0');   // Ones digit of month
+    lcd_data('/');                  // Display separator '/'
+
+    // Display Year (YY)
+    lcd_data((year / 10) + '0');    // Tens digit of year
+    lcd_data((year % 10) + '0');    // Ones digit of year
+
+    // --- Display Time on Second Line ---
+    lcd_cmd(0xC0);   // Move LCD cursor to second line, first position
+
+    // Display Hours (HH)
+    lcd_data((hr / 10) + '0');      // Tens digit of hour
+    lcd_data((hr % 10) + '0');      // Ones digit of hour
+    lcd_data(':');                  // Display separator ':'
+
+    // Display Minutes (MM)
+    lcd_data((min / 10) + '0');     // Tens digit of minute
+    lcd_data((min % 10) + '0');     // Ones digit of minute
+    lcd_data(':');                  // Display separator ':'
+
+    // Display Seconds (SS)
+    lcd_data((sec / 10) + '0');     // Tens digit of second
+    lcd_data((sec % 10) + '0');     // Ones digit of second
 }
